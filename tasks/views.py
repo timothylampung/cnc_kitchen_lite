@@ -5,6 +5,7 @@ from django.views.generic import View, ListView, DetailView, CreateView, UpdateV
 # Create your views here.
 from django.views import View
 
+from tasks.forms import TaskSetForm
 from tasks.models import TaskSet
 
 
@@ -22,6 +23,22 @@ class TaskListView(ListView):
         return context
 
 
+class TaskCreateView(CreateView):
+    model = TaskSet
+    template_name = 'tasks/tasks.html'
+    form_class = TaskSetForm
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Recipe Create'
+        return context
+
+    def form_valid(self, form):
+        form.instance.creator = self.request.user
+        form.save()
+        return redirect(reverse("tasks:tasks-list"))
+
+
 class TaskDeleteView(DeleteView):
     model = TaskSet
     success_url = '/recipes/'
@@ -30,4 +47,4 @@ class TaskDeleteView(DeleteView):
     def post(self, request, *args, **kwargs):
         self.object = self.get_object()
         self.object.delete()
-        return redirect(reverse("recipes:recipes-list"))
+        return redirect(reverse("tasks:tasks-list"))

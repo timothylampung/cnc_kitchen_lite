@@ -7,6 +7,7 @@ from django.views.generic import ListView, DetailView, CreateView, DeleteView, U
 from recipe.forms import RecipeForm, StepForm
 from recipe.models import Recipe, Step
 from posts.forms import PostForm
+from tasks.forms import TaskSetForm
 
 
 class RecipeListView(ListView):
@@ -20,6 +21,8 @@ class RecipeListView(ListView):
         context = super().get_context_data(**kwargs)
         context['recipes'] = recipes
         context['recipes_count'] = recipes.count()
+        task_set_form = TaskSetForm()
+        context['task_set_form'] = task_set_form
         return context
 
 
