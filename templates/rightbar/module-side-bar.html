@@ -7,21 +7,75 @@
     <!--begin::Sidebar Content-->
     <div class="d-flex flex-column sidebar-body px-5 py-10" id="kt_sidebar_body">
         <!--begin::Sidebar Nav-->
-        <ul
-                style="  overflow-x: auto;
+        <ul style="  overflow-x: auto;
                 overflow-y: hidden;
-                flex-wrap: nowrap;"
-                class="sidebar-nav nav nav-tabs mb-10" id="kt_sidebar_tabs" role="tablist">
+                flex-wrap: nowrap;" class="sidebar-nav nav nav-tabs mb-10" id="kt_sidebar_tabs" role="tablist">
 
-            {% include 'rightbar/tab-icon.html' with name='M1' %}
-            {% include 'rightbar/tab-icon.html' with name='M2' %}
-            {% include 'rightbar/tab-icon.html' with name='M3' %}
-            {% include 'rightbar/tab-icon.html' with name='M4' %}
-            {% include 'rightbar/tab-icon.html' with name='M5' %}
-            {% include 'rightbar/tab-icon.html' with name='M6' %}
-            {% include 'rightbar/tab-icon.html' with name='M7' %}
-            {% include 'rightbar/tab-icon.html' with name='M8' %}
-            {% include 'rightbar/tab-icon.html' with name='M9' %}
+            <li class="nav-item p-1">
+                <a class="nav-link" data-bs-toggle="tab" data-kt-countup-tabs="true" href="#queued_tab">
+                    <!--begin::Svg Icon | path: icons/duotune/abstract/abs038.svg-->
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                         fill="white" class="bi bi-view-list" viewBox="0 0 16 16">
+                        <path d="M3 4.5h10a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2H3a2
+                        2 0 0 1-2-2v-3a2 2 0 0 1 2-2zm0 1a1 1 0 0 0-1 1v3a1 1 0 0 0 1
+                        1h10a1 1 0 0 0 1-1v-3a1 1 0 0 0-1-1H3zM1 2a.5.5 0 0 1 .5-.5h13a.5.5 0
+                        0 1 0 1h-13A.5.5 0 0 1 1 2zm0 12a.5.5 0 0 1 .5-.5h13a.5.5 0 0 1 0
+                        1h-13A.5.5 0 0 1 1 14z"/>
+                    </svg>
+                    <!--end::Svg Icon-->
+                </a>
+            </li>
+            <li class="nav-item p-1">
+                <a class="nav-link" data-bs-toggle="tab" data-kt-countup-tabs="true" href="#running_tab">
+                    <!--begin::Svg Icon | path: icons/duotune/abstract/abs038.svg-->
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
+                         class="bi bi-ui-checks-grid" viewBox="0 0 16 16">
+                        <path d="M2 10h3a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1H2a1
+                        1 0 0 1-1-1v-3a1 1 0 0 1 1-1zm9-9h3a1 1 0 0 1 1 1v3a1 1
+                        0 0 1-1 1h-3a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1zm0 9a1 1 0 0 0-1
+                        1v3a1 1 0 0 0 1 1h3a1 1 0 0 0 1-1v-3a1 1 0 0 0-1-1h-3zm0-10a2
+                        2 0 0 0-2 2v3a2 2 0 0 0 2 2h3a2 2 0 0 0 2-2V2a2 2 0 0
+                        0-2-2h-3zM2 9a2 2 0 0 0-2 2v3a2 2 0 0 0 2 2h3a2 2 0 0 0
+                        2-2v-3a2 2 0 0 0-2-2H2zm7 2a2 2 0 0 1 2-2h3a2 2 0 0 1 2
+                        2v3a2 2 0 0 1-2 2h-3a2 2 0 0 1-2-2v-3zM0 2a2 2 0 0 1
+                        2-2h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2H2a2 2 0 0
+                        1-2-2V2zm5.354.854a.5.5 0 1 0-.708-.708L3 3.793l-.646-.647a.5.5 0 1
+                        0-.708.708l1 1a.5.5 0 0 0 .708 0l2-2z"/>
+                    </svg>
+                    <!--end::Svg Icon-->
+                </a>
+            </li>
+
+
+            <li class="nav-item p-1">
+                <a class="nav-link" data-bs-toggle="tab" data-kt-countup-tabs="true" href="#completed_tab">
+                    <!--begin::Svg Icon | path: icons/duotune/abstract/abs038.svg-->
+                    <svg xmlns="http://www.w3.org/2000/svg"
+                         width="24" height="24" fill="green"
+                         class="bi bi-check-square-fill" viewBox="0 0 16 16">
+                        <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0
+                        2-2V2a2 2 0 0 0-2-2H2zm10.03 4.97a.75.75 0 0 1
+                        .011 1.05l-3.992 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75
+                        0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.75.75 0 0 1 1.08-.022z"/>
+                    </svg>
+                    <!--end::Svg Icon-->
+                </a>
+            </li>
+            <li class="nav-item p-1">
+                <a class="nav-link" data-bs-toggle="tab" data-kt-countup-tabs="true" href="#failed_tab">
+                    <!--begin::Svg Icon | path: icons/duotune/abstract/abs038.svg-->
+                    <svg xmlns="http://www.w3.org/2000/svg"
+                         width="24" height="24" fill="orange" class="bi bi-exclamation-triangle-fill"
+                         viewBox="0 0 16 16">
+                        <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96
+                        0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889
+                        0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0
+                        .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1
+                        5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
+                    </svg>
+                    <!--end::Svg Icon-->
+                </a>
+            </li>
 
         </ul>
         <!--end::Sidebar Nav-->
@@ -33,172 +87,10 @@
                 <!--begin::Tab content-->
                 <div class="tab-content px-5 px-xxl-10">
                     <!--begin::Tab pane-->
-                    <div class="tab-pane fade" id="kt_sidebar_tab_1" role="tabpanel">
-                        <!--begin::Statistics Widget-->
-                        <!--end::Statistics Widget-->
-                        <!--begin::Tasks Widget-->
-                        <div class="card card-flush card-p-0 shadow-none bg-transparent mb-5">
-                            <!--begin::Header-->
-                            <div class="card-header align-items-center border-0">
-                                <!--begin::Title-->
-                                <h3 class="card-title fw-bolder text-white fs-3">Latest Tasks</h3>
-                                <!--end::Title-->
-                                <!--begin::Toolbar-->
-                                <div class="card-toolbar">
-                                    <button type="button"
-                                            class="btn btn-icon btn-icon-white btn-active-color-primary me-n4"
-                                            data-kt-menu-trigger="click" data-kt-menu-overflow="true"
-                                            data-kt-menu-placement="bottom-end">
-                                        <!--begin::Svg Icon | path: icons/duotune/general/gen024.svg-->
-                                        <span class="svg-icon svg-icon-2">
-															<svg xmlns="http://www.w3.org/2000/svg" width="24px"
-                                                                 height="24px" viewBox="0 0 24 24">
-																<g stroke="none" stroke-width="1" fill="none"
-                                                                   fill-rule="evenodd">
-																	<rect x="5" y="5" width="5" height="5" rx="1"
-                                                                          fill="currentColor"/>
-																	<rect x="14" y="5" width="5" height="5" rx="1"
-                                                                          fill="currentColor" opacity="0.3"/>
-																	<rect x="5" y="14" width="5" height="5" rx="1"
-                                                                          fill="currentColor" opacity="0.3"/>
-																	<rect x="14" y="14" width="5" height="5" rx="1"
-                                                                          fill="currentColor" opacity="0.3"/>
-																</g>
-															</svg>
-														</span>
-                                        <!--end::Svg Icon-->
-                                    </button>
-                                    <!--begin::Menu 1-->
-                                    <div class="menu menu-sub menu-sub-dropdown w-250px w-md-300px"
-                                         data-kt-menu="true" id="kt_menu_624457bd76d00">
-                                        <!--begin::Header-->
-                                        <div class="px-7 py-5">
-                                            <div class="fs-5 text-dark fw-bolder">Filter Options</div>
-                                        </div>
-                                        <!--end::Header-->
-                                        <!--begin::Menu separator-->
-                                        <div class="separator border-gray-200"></div>
-                                        <!--end::Menu separator-->
-                                        <!--begin::Form-->
-                                        <div class="px-7 py-5">
-                                            <!--begin::Input group-->
-                                            <div class="mb-10">
-                                                <!--begin::Label-->
-                                                <label class="form-label fw-bold">Status:</label>
-                                                <!--end::Label-->
-                                                <!--begin::Input-->
-                                                <div>
-                                                    <select class="form-select form-select-solid"
-                                                            data-kt-select2="true"
-                                                            data-placeholder="Select option"
-                                                            data-dropdown-parent="#kt_menu_624457bd76d00"
-                                                            data-allow-clear="true">
-                                                        <option></option>
-                                                        <option value="1">Approved</option>
-                                                        <option value="2">Pending</option>
-                                                        <option value="2">In Process</option>
-                                                        <option value="2">Rejected</option>
-                                                    </select>
-                                                </div>
-                                                <!--end::Input-->
-                                            </div>
-                                            <!--end::Input group-->
-                                            <!--begin::Input group-->
-                                            <div class="mb-10">
-                                                <!--begin::Label-->
-                                                <label class="form-label fw-bold">Member Type:</label>
-                                                <!--end::Label-->
-                                                <!--begin::Options-->
-                                                <div class="d-flex">
-                                                    <!--begin::Options-->
-                                                    <label class="form-check form-check-sm form-check-custom form-check-solid me-5">
-                                                        <input class="form-check-input" type="checkbox"
-                                                               value="1"/>
-                                                        <span class="form-check-label">Author</span>
-                                                    </label>
-                                                    <!--end::Options-->
-                                                    <!--begin::Options-->
-                                                    <label class="form-check form-check-sm form-check-custom form-check-solid">
-                                                        <input class="form-check-input" type="checkbox"
-                                                               value="2" checked="checked"/>
-                                                        <span class="form-check-label">Customer</span>
-                                                    </label>
-                                                    <!--end::Options-->
-                                                </div>
-                                                <!--end::Options-->
-                                            </div>
-                                            <!--end::Input group-->
-                                            <!--begin::Input group-->
-                                            <div class="mb-10">
-                                                <!--begin::Label-->
-                                                <label class="form-label fw-bold">Notifications:</label>
-                                                <!--end::Label-->
-                                                <!--begin::Switch-->
-                                                <div class="form-check form-switch form-switch-sm form-check-custom form-check-solid">
-                                                    <input class="form-check-input" type="checkbox" value=""
-                                                           name="notifications" checked="checked"/>
-                                                    <label class="form-check-label">Enabled</label>
-                                                </div>
-                                                <!--end::Switch-->
-                                            </div>
-                                            <!--end::Input group-->
-                                            <!--begin::Actions-->
-                                            <div class="d-flex justify-content-end">
-                                                <button type="reset"
-                                                        class="btn btn-sm btn-light btn-active-light-primary me-2"
-                                                        data-kt-menu-dismiss="true">Reset
-                                                </button>
-                                                <button type="submit" class="btn btn-sm btn-primary"
-                                                        data-kt-menu-dismiss="true">Apply
-                                                </button>
-                                            </div>
-                                            <!--end::Actions-->
-                                        </div>
-                                        <!--end::Form-->
-                                    </div>
-                                    <!--end::Menu 1-->
-                                </div>
-                                <!--end::Title-->
-                            </div>
-                            <!--end::Header-->
-                            <!--begin::Body-->
-                            <div class="card-body py-0">
-                                <!--begin::Item-->
-                                <div class="d-flex flex-nowrap align-items-center mb-7">
-                                    <!--begin::Symbol-->
-                                    <div class="symbol symbol-50px me-5">
-                                        <span class="symbol-label sidebar-bg-muted">
-															<!--begin::Svg Icon | path: icons/duotune/abstract/abs027.svg-->
-															<span class="svg-icon svg-icon-2x svg-icon-success">
-																<svg xmlns="http://www.w3.org/2000/svg" width="24"
-                                                                     height="24" viewBox="0 0 24 24" fill="none">
-																	<path opacity="0.3"
-                                                                          d="M21.25 18.525L13.05 21.825C12.35 22.125 11.65 22.125 10.95 21.825L2.75 18.525C1.75 18.125 1.75 16.725 2.75 16.325L4.04999 15.825L10.25 18.325C10.85 18.525 11.45 18.625 12.05 18.625C12.65 18.625 13.25 18.525 13.85 18.325L20.05 15.825L21.35 16.325C22.35 16.725 22.35 18.125 21.25 18.525ZM13.05 16.425L21.25 13.125C22.25 12.725 22.25 11.325 21.25 10.925L13.05 7.62502C12.35 7.32502 11.65 7.32502 10.95 7.62502L2.75 10.925C1.75 11.325 1.75 12.725 2.75 13.125L10.95 16.425C11.65 16.725 12.45 16.725 13.05 16.425Z"
-                                                                          fill="currentColor"/>
-																	<path d="M11.05 11.025L2.84998 7.725C1.84998 7.325 1.84998 5.925 2.84998 5.525L11.05 2.225C11.75 1.925 12.45 1.925 13.15 2.225L21.35 5.525C22.35 5.925 22.35 7.325 21.35 7.725L13.05 11.025C12.45 11.325 11.65 11.325 11.05 11.025Z"
-                                                                          fill="currentColor"/>
-																</svg>
-															</span>
-                                            <!--end::Svg Icon-->
-                                        </span>
-                                    </div>
-                                    <!--end::Symbol-->
-                                    <!--begin::Text-->
-                                    <div class="d-flex flex-column">
-                                        <a href="#" class="text-white text-hover-primary fs-6 fw-bolder">
-                                            Masak nasi ayam goreng
-                                        </a>
-                                        <span class="sidebar-text-muted fw-bold">NASI AYAM</span>
-                                    </div>
-                                    <!--end::Text-->
-                                </div>
-                                <!--end::Item-->
-                                <!--begin::Item-->
-                            </div>
-                            <!--end::Body-->
-                        </div>
-                        <!--end::Tasks Widget-->
-                    </div>
+                    {% include 'rightbar/queued-tab.html' %}
+                    {% include 'rightbar/completed-tab.html' %}
+                    {% include 'rightbar/failed-tab.html' %}
+                    {% include 'rightbar/running-tab.html' %}
                     <!--end::Tab pane-->
                     <!--begin::Tab pane-->
                     <!--end::Tab pane-->

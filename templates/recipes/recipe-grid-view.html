@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+    <div class="row g-2 g-xl-5 mb-2 g-xl-5">
+        <!--begin::Col-->
+        {% include 'recipes/recipe-grid-item.html' %}
+        {% include 'recipes/recipe-grid-item.html' %}
+        {% include 'recipes/recipe-grid-item.html' %}
+        {% include 'recipes/recipe-grid-item.html' %}
+        {% include 'recipes/recipe-grid-item.html' %}
+        <!--end::Col-->
+        <!--begin::Col-->
+    </div>
+{% endblock %}

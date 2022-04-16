@@ -1,0 +1,129 @@
+{% load rq_task_filters %}
+
+
+<div class="tab-pane fade" id="failed_tab" role="tabpanel">
+    <!--begin::Statistics Widget-->
+    <!--end::Statistics Widget-->
+    <!--begin::Tasks Widget-->
+    <div class="card card-flush card-p-0 shadow-none bg-transparent mb-5">
+        <!--begin::Header-->
+        <div class="card-header align-items-center border-0">
+            <!--begin::Title-->
+            <h3 class="card-title fw-bolder text-white fs-3">Failed Tasks</h3>
+            <!--end::Title-->
+            <!--begin::Toolbar-->
+            <!--end::Title-->
+        </div>
+        <!--end::Header-->
+        <!--begin::Body-->
+        <div class="card-body py-0">
+            <!--begin::Item-->
+            {% get_failed_jobs as jobs %}
+
+            {% for job in jobs %}
+                <div class="d-flex flex-nowrap align-items-center mb-7">
+                    <!--begin::Symbol-->
+                    <div class="symbol symbol-50px me-5">
+                    <span class="symbol-label sidebar-bg-muted">
+															<!--begin::Svg Icon | path: icons/duotune/abstract/abs027.svg-->
+                        <button type="button" class="btn btn-icon btn-icon-white btn-active-color-primary me-n4"
+                                data-kt-menu-trigger="click" data-kt-menu-overflow="true"
+                                data-kt-menu-placement="bottom-end">
+                    <!--begin::Svg Icon | path: icons/duotune/general/gen024.svg-->
+                    <span class="svg-icon svg-icon-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24px"
+                             height="24px" viewBox="0 0 24 24">
+                            <g stroke="none" stroke-width="1" fill="none"
+                               fill-rule="evenodd">
+                                <rect x="5" y="5" width="5" height="5" rx="1"
+                                      fill="currentColor"/>
+                                <rect x="14" y="5" width="5" height="5" rx="1"
+                                      fill="currentColor" opacity="0.3"/>
+                                <rect x="5" y="14" width="5" height="5" rx="1"
+                                      fill="currentColor" opacity="0.3"/>
+                                <rect x="14" y="14" width="5" height="5" rx="1"
+                                      fill="currentColor" opacity="0.3"/>
+                            </g>
+                        </svg>
+                    </span>
+                            <!--end::Svg Icon-->
+                </button>
+                        <!--begin::Menu 1-->
+                        <div class="menu menu-sub menu-sub-dropdown w-250px w-md-300px"
+                             data-kt-menu="true" id="kt_menu_{{ forloop.counter0 }}">
+                    <!--begin::Header-->
+                    <div class="px-7 py-5">
+                        <div class="fs-5 text-dark fw-bolder">Selection Action</div>
+                    </div>
+                            <!--end::Header-->
+                            <!--begin::Menu separator-->
+                    <div class="separator border-gray-200"></div>
+                            <!--end::Menu separator-->
+                            <!--begin::Form-->
+                    <div class="px-7 py-5">
+                        <!--begin::Input group-->
+                        <div class="mb-10">
+                            <!--begin::Label-->
+                            <label class="form-label fw-bold">Reassign to:</label>
+                            <!--end::Label-->
+                            <!--begin::Input-->
+                            <div>
+                                <select class="form-select form-select-solid"
+                                        data-kt-select2="true"
+                                        data-placeholder="Select option"
+                                        data-dropdown-parent="#kt_menu_{{ forloop.counter0 }}"
+                                        data-allow-clear="true">
+                                    <option></option>
+                                    <option value="1">Cooking Module 1</option>
+                                    <option value="2">Cooking Module 2</option>
+                                    <option value="3">Cooking Module 3</option>
+                                    <option value="4">Cooking Module 4</option>
+                                    <option value="5">Transporter 1</option>
+                                    <option value="6">Transporter 2</option>
+                                </select>
+                            </div>
+                            <!--end::Input-->
+                        </div>
+                        <!--end::Input group-->
+                        <!--begin::Input group-->
+
+                        <!--end::Input group-->
+                        <!--begin::Input group-->
+
+                        <!--end::Input group-->
+                        <!--begin::Actions-->
+                        <div class="d-flex justify-content-end">
+                            <button type="reset"
+                                    class="btn btn-sm btn-light btn-active-light-primary me-2"
+                                    data-kt-menu-dismiss="true">Drop Task
+                            </button>
+                            <button type="submit" class="btn btn-sm btn-primary"
+                                    data-kt-menu-dismiss="true">Reassign Task
+                            </button>
+                        </div>
+                        <!--end::Actions-->
+                    </div>
+                            <!--end::Form-->
+                </div>
+                        <!--end::Svg Icon-->
+                    </span>
+                    </div>
+                    <!--end::Symbol-->
+                    <!--begin::Text-->
+                    <div class="d-flex flex-column">
+                        <a href="#" class="text-white text-hover-primary fs-6 fw-bolder">
+                            Masak nasi ayam goreng
+                        </a>
+                        <span class="sidebar-text-muted fw-bold">{{ job.get_status }}</span>
+                    </div>
+                    <!--end::Text-->
+                </div>
+            {% endfor %}
+
+            <!--end::Item-->
+            <!--begin::Item-->
+        </div>
+        <!--end::Body-->
+    </div>
+    <!--end::Tasks Widget-->
+</div>

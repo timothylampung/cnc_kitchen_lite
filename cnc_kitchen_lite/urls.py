@@ -1,4 +1,5 @@
 from django.conf import settings
+from django.conf.urls import url
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include
@@ -16,18 +17,15 @@ from posts.views import (
     PostDetailView,
     PostCreateView,
     PostUpdateView,
-    PostDeleteView, RecipeListView, IngredientListView
+    PostDeleteView
 )
 from marketing.views import email_list_signup
+
+admin.site.site_header = 'CNC Kitchen v5.o'
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     # path('', index),
-    path('tasks/', IndexView.as_view(), name='home'),
-    path('recipes/', RecipeListView.as_view(), name='recipe-list'),
-    path('ingredients/', IngredientListView.as_view(), name='ingredients-list'),
-
-
 
     # path('cnc_kitchen_lite/', post_list, name='post-list'),
     path('cnc_kitchen_lite/', PostListView.as_view(), name='post-list'),
@@ -42,7 +40,13 @@ urlpatterns = [
     # path('post/<id>/delete/', post_delete, name='post-delete'),
     path('post/<pk>/delete/', PostDeleteView.as_view(), name='post-delete'),
     path('tinymce/', include('tinymce.urls')),
-    path('accounts/', include('allauth.urls'))
+    path('accounts/', include('allauth.urls')),
+
+    path("recipes/", include(("recipe.urls", "recipe"), namespace='recipes'), ),  # UI Kits Html files
+    path("modules/", include(("module.urls", "module"), namespace='modules')),  # UI Kits Html files
+    path("tasks/", include("tasks.urls")),  # UI Kits Html files
+    path("ingredients/", include(("ingredients.urls", "ingredients"), namespace='ingredients')),  # UI Kits Html files
+
 ]
 
 if settings.DEBUG:
@@ -50,3 +54,6 @@ if settings.DEBUG:
                           document_root=settings.STATIC_ROOT)
     urlpatterns += static(settings.MEDIA_URL,
                           document_root=settings.MEDIA_ROOT)
+urlpatterns += [
+    path('django-rq/', include('django_rq.urls'))
+]

@@ -9,7 +9,7 @@
         <div class="card-header border-0 pt-5">
             <h3 class="card-title align-items-start flex-column">
                 <span class="card-label fw-bolder fs-3 mb-1">Task Lists</span>
-                <span class="text-muted mt-1 fw-bold fs-7">50 tasks</span>
+                <span class="text-muted mt-1 fw-bold fs-7">{{ task_count }} task{{ task_count|pluralize }}</span>
             </h3>
 
             <div class="card-toolbar" data-bs-toggle="tooltip" data-bs-placement="top"
@@ -46,8 +46,7 @@
                             </div>
                         </th>
                         <th class="min-w-200px">Recipe</th>
-                        <th class="min-w-150px">Module</th>
-                        <th class="min-w-150px">Progress</th>
+                        <th class="min-w-150px">Handler</th>
                         <th class="min-w-100px text-end"></th>
                     </tr>
                     </thead>
@@ -55,13 +54,9 @@
                     <!--begin::Table body-->
                     <tbody>
 
-                    {% include 'tasks/task-item.html' %}
-                    {% include 'tasks/task-item.html' %}
-                    {% include 'tasks/task-item.html' %}
-                    {% include 'tasks/task-item.html' %}
-                    {% include 'tasks/task-item.html' %}
-                    {% include 'tasks/task-item.html' %}
-
+                    {% for task in task_set %}
+                        {% include 'tasks/task-item.html' with task=task %}
+                    {% endfor %}
                     </tbody>
                     <!--end::Table body-->
                 </table>
@@ -73,4 +68,65 @@
     </div>
     <!--end::Tables Widget 9-->
     <!--begin::Row-->
+{% endblock %}
+
+{% block extra_scripts %}
+    <script>
+
+        function promptDeleteTask(task_id) {
+            console.log(task_id)
+
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    deleteTask(task_id)
+                }
+            })
+        }
+
+
+        function deleteTask(task_id) {
+            var $crf_token = getCookie("csrftoken");
+
+            $.ajax({
+                type: "POST",
+                headers: {"X-CSRFToken": $crf_token},
+                contentType: 'application/json',
+                url: `/tasks/delete/${task_id}/`,
+                success: function (msg) {
+                    Swal.fire(
+                        'Deleted!',
+                        'Task has been deleted',
+                        'success'
+                    ).then((result) => {
+                        if (result.isConfirmed) {
+                            location.reload()
+                        }
+                    })
+                },
+                error: function (error) {
+                    Swal.fire(
+                        'Error!',
+                        `${error.statusText}`,
+                        'error'
+                    ).then((result) => {
+                        if (result.isConfirmed) {
+                            location.reload()
+                        }
+                    })
+                }
+            });
+
+        }
+
+
+    </script>
+
 {% endblock %}

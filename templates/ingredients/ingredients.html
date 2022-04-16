@@ -1,5 +1,7 @@
 {% extends 'base.html' %}
+{% load crispy_forms_tags %}
 {% load static %}
+
 
 {% block content %}
     <!--end::Row-->
@@ -8,15 +10,14 @@
         <!--begin::Header-->
         <div class="card-header border-0 pt-5">
             <h3 class="card-title align-items-start flex-column">
-                <span class="card-label fw-bolder fs-3 mb-1">Recipes Lists</span>
-                <span class="text-muted mt-1 fw-bold fs-7">50 recipes</span>
+                <span class="card-label fw-bolder fs-3 mb-1">Ingredient Lists</span>
+                <span class="text-muted mt-1 fw-bold fs-7">{{ ingredients_count }} ingredient{{ ingredients_count|pluralize }}</span>
             </h3>
 
-            <div class="card-toolbar" data-bs-toggle="tooltip" data-bs-placement="top"
-                 data-bs-trigger="hover" title="Click to add a user">
-                <a href="#" class="btn btn-sm btn-light btn-active-primary" data-bs-toggle="modal"
-                   data-bs-target="#kt_modal_invite_friends">
-                    <!--begin::Svg Icon | path: icons/duotune/arrows/arr075.svg-->
+            <div class="card-toolbar">
+                <a type="button" class="btn btn-sm btn-light btn-active-primary" data-kt-menu-trigger="click"
+                   data-kt-menu-overflow="true" data-kt-menu-placement="bottom-end">
+                    <!--begin::Svg Icon | path: icons/duotune/general/gen024.svg-->
                     <span class="svg-icon svg-icon-3">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                              viewBox="0 0 24 24" fill="none">
@@ -25,7 +26,33 @@
                             <rect x="4.36396" y="11.364" width="16" height="2" rx="1"
                                   fill="currentColor"/>
                         </svg>
-                    </span>Action</a>
+                    </span>Action
+                    <!--end::Svg Icon-->
+                </a>
+                <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-800 menu-state-bg-light-primary fw-bold w-200px py-3"
+                     data-kt-menu="true" style="">
+                    <!--begin::Heading-->
+                    <div class="menu-item px-3">
+                        <div class="menu-content text-muted pb-2 px-3 fs-7 text-uppercase">Actions</div>
+                    </div>
+                    <!--end::Heading-->
+                    <!--begin::Menu item-->
+                    <div class="menu-item px-3">
+                        <a href="{% url 'ingredients:ingredients-create' %}" class="menu-link px-3">New Ingredient</a>
+                    </div>
+
+                    <!--end::Menu item-->
+                    <!--begin::Menu item-->
+                    <div class="menu-item px-3">
+                        <a href="" class="menu-link flex-stack px-3 text-danger">Delete Selected
+                            <i class="fas fa-exclamation-circle ms-2 fs-7" data-bs-toggle="tooltip" title=""
+                               data-bs-original-title="Clear all the task" aria-label="Clear all the task"></i></a>
+                    </div>
+                    <!--end::Menu item-->
+                </div>
+
+                <!--begin::Menu 3-->
+                <!--end::Menu 3-->
             </div>
 
         </div>
@@ -45,21 +72,18 @@
                                        data-kt-check="true" data-kt-check-target=".widget-9-check"/>
                             </div>
                         </th>
-                        <th class="min-w-200px">Recipe</th>
-                        <th class="min-w-150px">Module</th>
-                        <th class="min-w-150px">Progress</th>
+                        <th class="min-w-200px">Ingredient</th>
+                        <th class="min-w-150px">Ingredient Type</th>
                         <th class="min-w-100px text-end"></th>
                     </tr>
                     </thead>
                     <!--end::Table head-->
                     <!--begin::Table body-->
                     <tbody>
-                    {% include 'recipes/recipe-item.html' %}
-                    {% include 'recipes/recipe-item.html' %}
-                    {% include 'recipes/recipe-item.html' %}
-                    {% include 'recipes/recipe-item.html' %}
-                    {% include 'recipes/recipe-item.html' %}
 
+                    {% for ingredient in ingredients %}
+                        {% include 'ingredients/ingredient-item.html' with ingredient=ingredient %}
+                    {% endfor %}
 
                     </tbody>
                     <!--end::Table body-->
@@ -72,4 +96,65 @@
     </div>
     <!--end::Tables Widget 9-->
     <!--begin::Row-->
+{% endblock %}
+
+{% block extra_scripts %}
+    <script>
+
+        function promptDeleteIngredients(ingredient_id) {
+            console.log(ingredient_id)
+
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    deleteIngredient(ingredient_id)
+                }
+            })
+        }
+
+
+        function deleteIngredient(ingredient_id) {
+            var $crf_token = getCookie("csrftoken");
+
+            $.ajax({
+                type: "POST",
+                headers: {"X-CSRFToken": $crf_token},
+                contentType: 'application/json',
+                url: `/ingredients/delete/${ingredient_id}/`,
+                success: function (msg) {
+                    Swal.fire(
+                        'Deleted!',
+                        'Recipe has been deleted',
+                        'success'
+                    ).then((result) => {
+                        if (result.isConfirmed) {
+                            location.reload()
+                        }
+                    })
+                },
+                error: function (error) {
+                    Swal.fire(
+                        'Error!',
+                        `${error.statusText}`,
+                        'error'
+                    ).then((result) => {
+                        if (result.isConfirmed) {
+                            location.reload()
+                        }
+                    })
+                }
+            });
+
+        }
+
+
+    </script>
+
 {% endblock %}

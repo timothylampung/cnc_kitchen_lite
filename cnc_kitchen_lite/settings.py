@@ -1,6 +1,8 @@
 import os
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
+from django.contrib import admin
+
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # Quick-start development settings - unsuitable for production
@@ -16,6 +18,42 @@ ALLOWED_HOSTS = ['*']
 
 # Application definition
 
+MODULE_QUEUE_NAME = [
+    ('stir_fry', 'stir_fry'),
+    ('deep_fry', 'deep_fry'),
+    ('boiler', 'boiler'),
+    ('pickup_module', 'pickup_module')
+]
+
+RQ_QUEUES = {
+    'default': {
+        'HOST': 'localhost',
+        'PORT': 6379,
+        'DB': 0,
+        'DEFAULT_TIMEOUT': 360,
+    },
+    'stir_fry': {
+        'HOST': 'localhost',
+        'PORT': 6379,
+        'DB': 0,
+    },
+    'deep_fry': {
+        'HOST': 'localhost',
+        'PORT': 6379,
+        'DB': 0,
+    },
+    'boiler': {
+        'HOST': 'localhost',
+        'PORT': 6379,
+        'DB': 0,
+    },
+    'pickup_module': {
+        'HOST': 'localhost',
+        'PORT': 6379,
+        'DB': 0,
+    },
+}
+
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -29,26 +67,30 @@ INSTALLED_APPS = [
     'allauth.account',
     'allauth.socialaccount',
 
-    'django_celery_results',
-    'celery_progress',
-    'django_celery_beat',
     'corsheaders',
     'channels',
     'rest_framework',
 
     'crispy_forms',
     'tinymce',
+    'django_rq',
 
     'marketing',
     'posts',
+    'tasks',
+    'recipe',
+    'module',
+    'ingredients',
 
-    'tasks'
+    'django_seed'
 ]
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -179,5 +221,4 @@ AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
     'allauth.account.auth_backends.AuthenticationBackend'
 )
-
 SITE_ID = 1

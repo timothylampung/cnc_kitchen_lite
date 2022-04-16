@@ -67,6 +67,7 @@ class IndexView(View):
             'latest': latest,
             'form': self.form
         }
+
         return render(request, 'tasks/tasks.html', context)
 
     def post(self, request, *args, **kwargs):
@@ -96,36 +97,8 @@ def index(request):
     return render(request, 'index.html', context)
 
 
-class RecipeListView(ListView):
-    model = Post
-    template_name = 'recipes/recipe.html'
-    context_object_name = 'queryset'
-    paginate_by = 1
-
-    def get_context_data(self, **kwargs):
-        category_count = get_category_count()
-        most_recent = Post.objects.order_by('-timestamp')[:3]
-        context = super().get_context_data(**kwargs)
-        context['most_recent'] = most_recent
-        context['page_request_var'] = "page"
-        context['category_count'] = category_count
-        return context
 
 
-class IngredientListView(ListView):
-    model = Post
-    template_name = 'ingredients/ingredients.html'
-    context_object_name = 'queryset'
-    paginate_by = 1
-
-    def get_context_data(self, **kwargs):
-        category_count = get_category_count()
-        most_recent = Post.objects.order_by('-timestamp')[:3]
-        context = super().get_context_data(**kwargs)
-        context['most_recent'] = most_recent
-        context['page_request_var'] = "page"
-        context['category_count'] = category_count
-        return context
 
 
 class PostListView(ListView):
