@@ -9,5 +9,5 @@ class Command(BaseCommand):
     help = 'Start Workers'
 
     def handle(self, *args, **options):
-        management.call_command("start_worker", ("cooking_module", "MODULE_1"))
-        management.call_command("start_worker", ("cooking_module", "MODULE_2"))
+        management.call_command("start_worker", ("stir_fry", "MODULE_2"))
+        management.call_command("start_worker", ("stir_fry", "MODULE_1"))

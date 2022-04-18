@@ -40,9 +40,7 @@ drf-writable-nested==0.6.3
 djangorestframework==3.12.2
 djangorestframework-jwt==1.11.0
 PyJWT==1.7.1
-django-rq==2.4.0
 channels-redis==3.2.0
-rq~=1.7.0
 channels~=3.0.3
 pyfiglet==0.8.post1
 django-crispy-forms==1.12.0

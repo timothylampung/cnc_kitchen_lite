@@ -18,6 +18,21 @@ ALLOWED_HOSTS = ['*']
 
 # Application definition
 
+TASK_UPDATE_BOARD_CAST = 'task_update_board_cast'
+REDIS_HOST = 'localhost'
+
+CHANNEL_LAYERS = {
+    "default": {
+        "CONFIG": {
+            # "hosts": [('redis', '6379')],
+            "capacity": 1500,  # default 100
+            "expiry": 10,  # default 60
+            "hosts": [(REDIS_HOST, '6379')]
+        },
+        "BACKEND": 'channels_redis.core.RedisChannelLayer'
+    }
+}
+
 MODULE_QUEUE_NAME = [
     ('stir_fry', 'stir_fry'),
     ('deep_fry', 'deep_fry'),

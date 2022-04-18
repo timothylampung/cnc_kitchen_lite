@@ -24,10 +24,20 @@
             <!--begin::Menu-->
             <div class="menu menu-column menu-rounded fw-bold my-auto"
                  id="#kt_aside_menu" data-kt-menu="true">
-                {% include 'sidebar/menu-item.html' with name='Tasks' url='/tasks' %}
-                {% include 'sidebar/menu-item.html' with name='Recipes' url='/recipes' %} %}
-                {% include 'sidebar/menu-item.html' with name='Ingredients' url='/ingredients' %}
-                {% include 'sidebar/menu-item.html' with name='Modules' url='/modules' %}
+                <div class="menu-item ">
+                    {% include 'sidebar/menu-item.html' with name='Tasks' url='/tasks' %}
+                </div>
+
+                <div class="menu-item">
+                    {% include 'sidebar/menu-item.html' with name='Recipes' url='/recipes' %} %}
+                </div>
+                <div class="menu-item">
+                    {% include 'sidebar/menu-item.html' with name='Ingredients' url='/ingredients' %}
+                </div>
+
+                <div class="menu-item">
+                    {% include 'sidebar/menu-item.html' with name='Modules' url='/modules' %}
+                </div>
 
             </div>
             <!--end::Menu-->
@@ -81,3 +91,5 @@
     </div>
     <!--end::Footer-->
 </div>
+
+

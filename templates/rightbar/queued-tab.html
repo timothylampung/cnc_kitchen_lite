@@ -1,7 +1,7 @@
 {% load rq_task_filters %}
 
 
-<div class="tab-pane fade" id="queued_tab" role="tabpanel">
+<div class="tab-pane show active" id="queued_tab" role="tabpanel">
     <!--begin::Statistics Widget-->
     <!--end::Statistics Widget-->
     <!--begin::Tasks Widget-->
@@ -57,16 +57,20 @@
         </div>
         <!--end::Header-->
         <!--begin::Body-->
-        <div class="card-body py-0">
+        <div id="queued-list" class="card-body py-0">
             <!--begin::Item-->
-            {% get_queued_jobs as jobs %}
+            <!--end::Item-->
+            <!--begin::Item-->
+        </div>
+        <!--end::Body-->
+    </div>
+    <!--end::Tasks Widget-->
+</div>
 
-            {% for job in jobs %}
-
-                {% fetch_job job as J %}
-                <div class="d-flex flex-nowrap align-items-center mb-7">
-                    <!--begin::Symbol-->
-                    <div class="symbol symbol-50px me-5">
+<div hidden="hidden">
+    <div id="queued-node-clone" class="d-flex flex-nowrap align-items-center mb-7">
+        <!--begin::Symbol-->
+        <div class="symbol symbol-50px me-5">
                     <span class="symbol-label sidebar-bg-muted">
                         <!--begin::Svg Icon | path: icons/duotune/abstract/abs027.svg-->
                         <button type="button"
@@ -182,23 +186,15 @@
                 </div>
                         <!--end::Svg Icon-->
                     </span>
-                    </div>
-                    <!--end::Symbol-->
-                    <!--begin::Text-->
-                    <div class="d-flex flex-column">
-                        <a href="#" class="text-white text-hover-primary fs-6 fw-bolder">
-                            Masak nasi ayam goreng
-                        </a>
-                        <span class="sidebar-text-muted fw-bold">{{ job.get_status }}</span>
-                    </div>
-                    <!--end::Text-->
-                </div>
-            {% endfor %}
-
-            <!--end::Item-->
-            <!--begin::Item-->
         </div>
-        <!--end::Body-->
+        <!--end::Symbol-->
+        <!--begin::Text-->
+        <div class="d-flex flex-column">
+            <a id="queued-tab-task-name" href="#" class="text-white text-hover-primary fs-6 fw-bolder">
+                {{ J.task_name }}
+            </a>
+            <span id="queued-tab-worker-name" class="sidebar-text-muted fw-bold">{{ J.worker_name }}</span>
+        </div>
+        <!--end::Text-->
     </div>
-    <!--end::Tasks Widget-->
 </div>

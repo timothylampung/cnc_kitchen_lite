@@ -101,11 +101,10 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Wok Operations</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">Add Recipe to task set</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 {% crispy task_set_form %}
-
             </div>
         </div>
     </div>
@@ -170,25 +169,39 @@
     </script>
 
     <script>
+        var quick = false;
+
+
+        function selectedRecipeItem(recipe_id, quickie) {
+            document.getElementById('id_recipe').value = recipe_id;
+            document.getElementById('id_recipe').disabled = 'disabled';
+            quick = quickie;
+        }
+
 
         (function () {
             'use strict';
             // Fetch all the forms we want to apply custom Bootstrap validation styles to
             var forms = document.querySelectorAll('.add-to-task-form');
-            var recipeId = document.getElementById('id_recipe').value;
-            var taskName = document.getElementById('id_task_name').value;
 
             // Loop over them and prevent submission
             Array.prototype.slice.call(forms)
                 .forEach(function (form) {
                     form.addEventListener('submit', function (event) {
+                        var recipeId = document.getElementById('id_recipe').value;
+                        var taskName = document.getElementById('id_task_name').value;
+
                         if (!form.checkValidity()) {
                             event.preventDefault();
                             event.stopPropagation();
                         } else {
                             event.preventDefault();
                             event.stopPropagation();
-                            addToTaskSet(recipeId, taskName);
+                            if (quick === true) {
+                                addToQueue(recipeId, taskName)
+                            } else {
+                                addToTaskSet(recipeId, taskName);
+                            }
                             console.log("Form submit enabled");
 
                         }
@@ -206,7 +219,42 @@
                 type: "GET",
                 headers: {"X-CSRFToken": $crf_token},
                 contentType: 'application/json',
-                url: `/tasks/api/add-to-task-set/?recipe_id=${recipeId.value}&taskName=${taskName.value}`,
+                url: `/tasks/api/add-to-task-set/?recipe_id=${recipeId}&task_name=${taskName}`,
+                success: function (msg) {
+                    Swal.fire(
+                        'Added!',
+                        'Recipe added to task set',
+                        'success'
+                    ).then((result) => {
+                        if (result.isConfirmed) {
+                            location.reload()
+                        }
+                    })
+                },
+                error: function (error) {
+                    Swal.fire(
+                        'Error!',
+                        `${error.statusText}`,
+                        'error'
+                    ).then((result) => {
+                        if (result.isConfirmed) {
+                            location.reload()
+                        }
+                    })
+                }
+            });
+
+        }
+
+        function addToQueue(recipeId, taskName) {
+            console.log(recipeId)
+            console.log(taskName)
+            var $crf_token = getCookie("csrftoken");
+            $.ajax({
+                type: "GET",
+                headers: {"X-CSRFToken": $crf_token},
+                contentType: 'application/json',
+                url: `/tasks/api/quick-add-to-task-queue/?recipe_id=${recipeId}&task_name=${taskName}`,
                 success: function (msg) {
                     Swal.fire(
                         'Added!',

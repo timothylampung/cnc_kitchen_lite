@@ -10,5 +10,6 @@ urlpatterns = [
     path('delete/<pk>/', TaskDeleteView.as_view(), name='tasks-delete'),
     path('create/', TaskCreateView.as_view(), name='tasks-create'),
     path("api/", include("tasks.api.api")),  # UI Kits Html files,
+    path("rq-task/", include("tasks.api.rq_tasks_url")),  # UI Kits Html files,
 
 ]

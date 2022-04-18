@@ -32,3 +32,8 @@ Get the original HTML template [here](https://bootstrapious.com/p/bootstrap-blog
 
 
 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
+
+
+For those having problems with this issue, I used a fork instead which fixed this in the latest master -
+
+pip install git+https://github.com/jace/rq-dashboard.git@master

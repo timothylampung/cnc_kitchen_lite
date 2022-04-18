@@ -45,8 +45,6 @@
                     <!--end::Svg Icon-->
                 </a>
             </li>
-
-
             <li class="nav-item p-1">
                 <a class="nav-link" data-bs-toggle="tab" data-kt-countup-tabs="true" href="#completed_tab">
                     <!--begin::Svg Icon | path: icons/duotune/abstract/abs038.svg-->
@@ -102,3 +100,32 @@
     </div>
     <!--end::Sidebar Content-->
 </div>
+
+{% block child_scripts %}
+
+    <script>
+        function get_queued_data() {
+            $.ajax({
+                type: 'GET',
+                url: `/tasks/rq-task/queues/4/`,
+                dataType: 'json',
+                success: function (res) {
+
+                    {#document.querySelector('#queued-list').innerHTML = '';#}
+                    console.log(res)
+                    res.jobs.forEach((i) => {
+                        let clone = document.querySelector('#queued-node-clone').cloneNode(true);
+                        let task_name = clone.querySelector('#queued-tab-task-name');
+                        let worker_name = clone.querySelector('#queued-tab-worker-name');
+                        task_name.innerText = i.task_name;
+                        worker_name.innerText = i.origin;
+                        let queued_list = document.querySelector('#queued-list');
+                        queued_list.appendChild(clone);
+
+                    });
+                },
+            });
+        }
+
+    </script>
+{% endblock %}

@@ -2,7 +2,7 @@ from rest_framework import generics
 from rest_framework.decorators import permission_classes
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
-
+from django.core import management
 from recipe.models import Recipe
 from tasks.api.serializer import TaskSetSerializer
 from tasks.models import TaskSet
@@ -22,4 +22,31 @@ class AddRecipeToTaskSet(generics.RetrieveAPIView):
             task_name=task_name
         )
         ser = TaskSetSerializer(instance=task_set)
+        return Response(ser.data)
+
+
+@permission_classes((AllowAny,))
+class QuickAddRecipeToTaskQueue(generics.RetrieveAPIView):
+    queryset = TaskSet.objects.all()
+    serializer_class = TaskSetSerializer
+
+    def get(self, request, *args, **kwargs):
+        recipe_id = request.GET.get('recipe_id')
+        task_name = request.GET.get('task_name')
+        management.call_command('add_recipe_to_queue', (recipe_id, task_name))
+        ser = TaskSetSerializer({"message": "Success!"})
+        return Response(ser.data)
+
+
+@permission_classes((AllowAny,))
+class RunSetOnModule(generics.RetrieveAPIView):
+    queryset = TaskSet.objects.all()
+    serializer_class = TaskSetSerializer
+
+    def get(self, request, *args, **kwargs):
+        recipe_id = request.GET.get('module_id')
+        task_name = request.GET.get('task_name')
+        management.call_command('add_recipe_to_queue', (recipe_id, task_name))
+
+        ser = TaskSetSerializer({"message": "Success!"})
         return Response(ser.data)

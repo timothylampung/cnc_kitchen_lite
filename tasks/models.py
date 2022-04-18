@@ -35,11 +35,11 @@ class TaskSet(DocumentModel):
     )
 
     recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE, default=None, related_name="tasks_on_recipe", )
-    task_name = models.CharField(null=True, blank=True, max_length=400)
+    task_name = models.CharField(null=True, max_length=400)
     time_to_complete = models.IntegerField(default=0, null=True, blank=True, )
     task_status = models.CharField(max_length=200, null=True, choices=TASK_STATUS, default=PENDING)
     rq_job_id = models.CharField(null=True, blank=True, max_length=400)
 
     def save(self, **kwargs):
-        self.task_name = self.recipe.recipe_name
+        self.task_name = self.recipe.recipe_name + '-' + self.task_name
         super(TaskSet, self).save(**kwargs)
