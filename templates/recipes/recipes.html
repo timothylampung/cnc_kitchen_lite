@@ -190,6 +190,7 @@
                     form.addEventListener('submit', function (event) {
                         var recipeId = document.getElementById('id_recipe').value;
                         var taskName = document.getElementById('id_task_name').value;
+                        var moduleId = document.getElementById('id_module').value;
 
                         if (!form.checkValidity()) {
                             event.preventDefault();
@@ -198,9 +199,9 @@
                             event.preventDefault();
                             event.stopPropagation();
                             if (quick === true) {
-                                addToQueue(recipeId, taskName)
+                                addToQueue(recipeId, taskName, moduleId)
                             } else {
-                                addToTaskSet(recipeId, taskName);
+                                addToTaskSet(recipeId, taskName, moduleId);
                             }
                             console.log("Form submit enabled");
 
@@ -211,15 +212,16 @@
                 })
         })();
 
-        function addToTaskSet(recipeId, taskName) {
+        function addToTaskSet(recipeId, taskName, moduleId) {
             console.log(recipeId)
             console.log(taskName)
+            console.log(moduleId)
             var $crf_token = getCookie("csrftoken");
             $.ajax({
                 type: "GET",
                 headers: {"X-CSRFToken": $crf_token},
                 contentType: 'application/json',
-                url: `/tasks/api/add-to-task-set/?recipe_id=${recipeId}&task_name=${taskName}`,
+                url: `/tasks/api/add-to-task-set/?recipe_id=${recipeId}&task_name=${taskName}&module_id=${moduleId}`,
                 success: function (msg) {
                     Swal.fire(
                         'Added!',
@@ -227,7 +229,6 @@
                         'success'
                     ).then((result) => {
                         if (result.isConfirmed) {
-                            location.reload()
                         }
                     })
                 },
@@ -238,7 +239,6 @@
                         'error'
                     ).then((result) => {
                         if (result.isConfirmed) {
-                            location.reload()
                         }
                     })
                 }
@@ -246,7 +246,7 @@
 
         }
 
-        function addToQueue(recipeId, taskName) {
+        function addToQueue(recipeId, taskName, moduleId) {
             console.log(recipeId)
             console.log(taskName)
             var $crf_token = getCookie("csrftoken");
@@ -254,7 +254,7 @@
                 type: "GET",
                 headers: {"X-CSRFToken": $crf_token},
                 contentType: 'application/json',
-                url: `/tasks/api/quick-add-to-task-queue/?recipe_id=${recipeId}&task_name=${taskName}`,
+                url: `/tasks/api/quick-add-to-task-queue/?recipe_id=${recipeId}&task_name=${taskName}&module_id=${moduleId}`,
                 success: function (msg) {
                     Swal.fire(
                         'Added!',
@@ -262,7 +262,6 @@
                         'success'
                     ).then((result) => {
                         if (result.isConfirmed) {
-                            location.reload()
                         }
                     })
                 },
@@ -273,7 +272,6 @@
                         'error'
                     ).then((result) => {
                         if (result.isConfirmed) {
-                            location.reload()
                         }
                     })
                 }

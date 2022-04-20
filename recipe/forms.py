@@ -4,7 +4,6 @@ from django.forms import ModelForm, Form
 from crispy_forms.helper import FormHelper
 from recipe.models import Recipe, Step
 
-
 class RecipeForm(ModelForm):
     description = forms.CharField(widget=forms.Textarea())
 

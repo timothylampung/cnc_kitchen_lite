@@ -33,11 +33,33 @@ CHANNEL_LAYERS = {
     }
 }
 
+STIR_FRY_MODULE = 'STIR_FRY_MODULE'
+DEEP_FRY_MODULE = 'DEEP_FRY_MODULE'
+GRILLING_MODULE = 'GRILLING_MODULE'
+DRINKS_MODULE = 'DRINKS_MODULE'
+BOILER_MODULE = 'BOILER_MODULE'
+STEAMING_MODULE = 'STEAMING_MODULE'
+TRANSPORTER_MODULE = 'TRANSPORTER_MODULE'
+
+HANDLER_TYPE = (
+    (STIR_FRY_MODULE, 'STIR_FRY_MODULE'),
+    (DEEP_FRY_MODULE, 'DEEP_FRY_MODULE'),
+    (GRILLING_MODULE, 'GRILLING_MODULE'),
+    (DRINKS_MODULE, 'DRINKS_MODULE'),
+    (BOILER_MODULE, 'BOILER_MODULE'),
+    (STEAMING_MODULE, 'STEAMING_MODULE'),
+    (TRANSPORTER_MODULE, 'TRANSPORTER_MODULE'),
+)
+
 MODULE_QUEUE_NAME = [
-    ('stir_fry', 'stir_fry'),
-    ('deep_fry', 'deep_fry'),
-    ('boiler', 'boiler'),
-    ('pickup_module', 'pickup_module')
+    ('192.168.42.116', '192.168.42.116'),
+    ('192.168.42.117', '192.168.42.117'),
+    ('192.168.42.118', '192.168.42.118'),
+    ('192.168.42.119', '192.168.42.119'),
+    ('192.168.42.120', '192.168.42.120'),
+    ('192.168.42.121', '192.168.42.121'),
+    ('192.168.42.122', '192.168.42.122'),
+    ('192.168.42.123', '192.168.42.123'),
 ]
 
 RQ_QUEUES = {
@@ -47,26 +69,47 @@ RQ_QUEUES = {
         'DB': 0,
         'DEFAULT_TIMEOUT': 360,
     },
-    'stir_fry': {
+    '192.168.42.116': {
         'HOST': 'localhost',
         'PORT': 6379,
         'DB': 0,
     },
-    'deep_fry': {
+    '192.168.42.117': {
         'HOST': 'localhost',
         'PORT': 6379,
         'DB': 0,
     },
-    'boiler': {
+    '192.168.42.118': {
         'HOST': 'localhost',
         'PORT': 6379,
         'DB': 0,
     },
-    'pickup_module': {
+    '192.168.42.119': {
         'HOST': 'localhost',
         'PORT': 6379,
         'DB': 0,
     },
+    '192.168.42.120': {
+        'HOST': 'localhost',
+        'PORT': 6379,
+        'DB': 0,
+    },
+    '192.168.42.121': {
+        'HOST': 'localhost',
+        'PORT': 6379,
+        'DB': 0,
+    },
+    '192.168.42.122': {
+        'HOST': 'localhost',
+        'PORT': 6379,
+        'DB': 0,
+    },
+    '192.168.42.123': {
+        'HOST': 'localhost',
+        'PORT': 6379,
+        'DB': 0,
+    },
+
 }
 
 INSTALLED_APPS = [

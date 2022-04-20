@@ -35,7 +35,8 @@
                 <!--end::Heading-->
                 <!--begin::Menu item-->
                 <div class="menu-item px-3">
-                    <a href="#" data-bs-toggle="modal" data-bs-target="#add_pu_operation" class="menu-link px-3">Pick Ingredients</a>
+                    <a href="#" data-bs-toggle="modal" data-bs-target="#add_pu_operation" class="menu-link px-3">Pick
+                        Ingredients</a>
                 </div>
                 <!--end::Menu item-->
                 <div class="menu-item px-3">
@@ -336,6 +337,32 @@
     </div>
 
 
+
+    <div class="modal fade" tabindex="-1" id="kt_modal_1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Add Step</h5>
+
+                    <!--begin::Close-->
+                    <div class="btn btn-icon btn-sm btn-active-light-primary ms-2" data-bs-dismiss="modal"
+                         aria-label="Close">
+                        <span class="svg-icon svg-icon-2x"></span>
+                    </div>
+                    <!--end::Close-->
+                </div>
+
+                <div class="modal-body">
+                    {% crispy valve_form %}
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="modal fade" id="add_wok_operation" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">

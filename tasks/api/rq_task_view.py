@@ -5,10 +5,12 @@ from math import ceil
 
 from django.contrib import admin, messages
 from django.contrib.admin.views.decorators import staff_member_required
+from django.core import management
 from django.http import Http404, JsonResponse
 from django.shortcuts import redirect, render
 from django.urls import reverse
 from django.views.decorators.cache import never_cache
+from django.views.decorators.csrf import csrf_exempt
 from django_rq.queues import get_queue_by_index
 from django_rq.settings import API_TOKEN
 from django_rq.utils import get_statistics, get_jobs
@@ -40,6 +42,7 @@ def jobs_to_dictionary(jobs):
 def job_to_dictionary(_job):
     job = _job.to_dict()
     data = job.pop('data')
+    d = job.update({"id": _job.get_id()})
     try:
         d = job.pop('exc_info')
     except Exception:
@@ -374,26 +377,20 @@ def job_detail(request, queue_index, job_id):
 
 
 @never_cache
-@staff_member_required
 @api_view(['POST'])
 @schema(None)
-def delete_job(request, queue_index, job_id):
-    queue_index = int(queue_index)
-    queue = get_queue_by_index(queue_index)
-    job = Job.fetch(job_id, connection=queue.connection)
+def delete_job(request):
+    print(request.data['queue_id'])
+    print(str(request.data['task_ids']))
+    args = [
+        '--job-ids', request.data['task_ids'],
+        '--queue-index', request.data['queue_id']
+    ]
 
-    if request.method == 'POST':
-        # Remove job id from queue and delete the actual job
-        queue.connection.lrem(queue.key, 0, job.id)
-        job.delete()
-        messages.info(request, 'You have successfully deleted %s' % job.id)
-        return redirect('rq_jobs', queue_index)
+    print(args)
 
-    context_data = {
-        'queue_index': queue_index,
-        'job': job_to_dictionary(job),
-    }
-    return Response(context_data)
+    management.call_command('delete_job_bulk', *args)
+    return Response(request.data)
 
 
 @never_cache

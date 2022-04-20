@@ -19,6 +19,7 @@ class TaskSetForm(ModelForm):
         self.helper.layout = Layout(
             Div(
                 Div('recipe', css_class='form-group col-md-12'),
+                Div('module', css_class='form-group col-md-12'),
                 Div('task_name', css_class='form-group col-md-12'),
                 css_class='modal-body'
             ),

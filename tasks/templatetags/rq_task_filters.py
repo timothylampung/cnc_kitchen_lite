@@ -9,7 +9,7 @@ from rq.registry import StartedJobRegistry, FailedJobRegistry, FinishedJobRegist
 register = template.Library()
 redis_conn = Redis()
 started = StartedJobRegistry('stir_fry', connection=redis_conn)
-failed = FailedJobRegistry('stir_fry', connection=redis_conn)
+failed = FailedJobRegistry('default', connection=redis_conn)
 finished = FinishedJobRegistry('stir_fry', connection=redis_conn)
 
 _q = Queue('stir_fry', connection=redis_conn)
@@ -17,13 +17,16 @@ _q = Queue('stir_fry', connection=redis_conn)
 
 @register.simple_tag
 def fetch_job(id):
-    _job = _q.fetch_job(id)
-    job = _job.to_dict()
-    data = job.pop('data')
+    try:
+        _job = _q.fetch_job(id)
+        job = _job.to_dict()
+        data = job.pop('data')
 
-    _a = job.copy()
-    _a.update(_job.kwargs)
-    return _a
+        _a = job.copy()
+        _a.update(_job.kwargs)
+        return _a
+    except Exception:
+        return 0
 
 
 @register.simple_tag

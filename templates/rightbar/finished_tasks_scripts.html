@@ -1,0 +1,142 @@
+<script>
+
+    var checkedfinishedItems = {
+        queue_id: 0,
+        task_ids: []
+    };
+
+    function get_finished_data(queue_id) {
+        console.log(queue_id)
+        $.ajax({
+            type: 'GET',
+            url: `/tasks/rq-task/queues/${queue_id}/finished/`,
+            dataType: 'json',
+            success: function (res) {
+                document.querySelector('#finished-list').innerHTML = ''
+                console.log(res)
+                itemsHtml = '';
+
+                res.jobs.forEach((job) => {
+                    a = `
+                        <div id="finished-node-clone" class="d-flex flex-nowrap align-items-center mb-7">
+                            <div class="symbol symbol-50px me-5">
+                                    <div class="form-check form-check-sm form-check-custom form-check-solid">
+                                        <input onchange="checkfinishedItem('${job.id}', ${queue_id})" id="checked_${job.id}" class="form-check-input widget-9-check" type="checkbox" value="1"/>
+                                    </div>
+                            </div>
+                            <div class="d-flex flex-column">
+                                <a id="finished-tab-task-name" href="#" class="text-white text-hover-primary fs-6 fw-bolder">
+                                    ${job.task_name}
+                                </a>
+                                <span id="finished-tab-worker-name" class="sidebar-text-muted fw-bold">${job.origin}</span>
+                                <span id="finished-tab-worker-name" class="sidebar-text-muted fw-bold">${job.id}</span>
+                            </div>
+                        </div>`;
+
+                    itemsHtml = itemsHtml + a;
+
+                });
+
+                let finished_list = document.querySelector('#finished-list');
+                finished_list.innerHTML = itemsHtml;
+            },
+            error: function (e) {
+                console.log(e)
+            }
+        });
+    }
+
+
+    function checkfinishedItem(task_id, queue_id) {
+
+        checkedfinishedItems.queue_id = queue_id;
+
+        var checkfinishedItem = document.getElementById(`checked_${task_id}`);
+
+        if (checkfinishedItem.checked) {
+            checkedfinishedItems.task_ids.push(task_id);
+        } else {
+            checkedfinishedItems.task_ids.splice(checkedfinishedItems.task_ids.indexOf(task_id), 1);
+        }
+        console.log(checkedfinishedItems)
+    }
+
+
+    function promptDeletefinishedBulk() {
+
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                deletefinished()
+            }
+        })
+    }
+
+    function deletefinished() {
+        var $crf_token = getCookie("csrftoken");
+        {#^queues/(?P<queue_index>[\d]+)/(?P<job_id>[-\w\.\:\$]+)/delete/$#}
+        $.ajax({
+            type: "POST",
+            headers: {"X-CSRFToken": $crf_token},
+            contentType: 'application/json',
+            data: JSON.stringify(checkedfinishedItems),
+            url: `/tasks/rq-task/queues/delete-jobs/`,
+            success: function (msg) {
+                Swal.fire(
+                    'Deleted!',
+                    'Recipe has been deleted',
+                    'success'
+                ).then((result) => {
+                    if (result.isConfirmed) {
+                    }
+                })
+            },
+            error: function (error) {
+                Swal.fire(
+                    'Error!',
+                    `${error.statusText}`,
+                    'error'
+                ).then((result) => {
+                    if (result.isConfirmed) {
+                    }
+                })
+            }
+        });
+
+    }
+
+
+    function startWorker() {
+        var $crf_token = getCookie("csrftoken");
+        {#^queues/(?P<queue_index>[\d]+)/(?P<job_id>[-\w\.\:\$]+)/delete/$#}
+        $.ajax({
+            type: "GET",
+            headers: {"X-CSRFToken": $crf_token},
+            contentType: 'application/json',
+            url: `/tasks/api/run-set`,
+            success: function (msg) {
+                console.log(msg)
+            },
+            error: function (error) {
+                Swal.fire(
+                    'Error!',
+                    `${error.statusText}`,
+                    'error'
+                ).then((result) => {
+                    if (result.isConfirmed) {
+                    }
+                })
+            }
+        });
+
+    }
+
+
+</script>

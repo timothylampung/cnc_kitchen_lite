@@ -9,6 +9,12 @@ from recipe.models import Recipe, Step
 from posts.forms import PostForm
 from tasks.forms import TaskSetForm
 
+from recipe.step_forms import (HeaterForm, MixerForm, ValveForm)
+
+heater_form = HeaterForm()
+mixer_form = MixerForm()
+valve_form = ValveForm()
+
 
 class RecipeListView(ListView):
     model = Recipe
@@ -64,6 +70,9 @@ class RecipeDetailView(DetailView, UpdateView):
         context['pickup_step_form'] = pickup_step_form
         context['recipe'] = self.object
         context['title'] = 'Recipe Detail'
+        context['heater_form'] = heater_form
+        context['mixer_form'] = mixer_form
+        context['valve_form'] = valve_form
         return self.render_to_response(context)
 
     def form_valid(self, form):

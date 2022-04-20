@@ -21,7 +21,7 @@ class ModuleForm(ModelForm):
                 css_class='row'
             ),
             Div(
-                Div('queue_handler', css_class='form-group col-md-4'),
+                Div('type_handler', css_class='form-group col-md-4'),
                 Div('ip_address', css_class='form-group col-md-4'),
                 Div('port', css_class='form-group col-md-4'),
                 css_class='row'

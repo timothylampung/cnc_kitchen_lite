@@ -614,6 +614,7 @@
     console.log('window.load!')
 
     window.onload = function () {
+        get_queued_data(4);
         console.log('window.load!')
         var toastMessages = [];
         let socket = new WebSocket("ws://localhost:8000/ws/channel/1/");
@@ -632,7 +633,7 @@
             if (event.data !== undefined) {
                 console.log(event.data)
                 addToast(JSON.parse(event.data).message, 'info');
-                get_queued_data();
+                load_tasks();
             }
 
         };
@@ -641,7 +642,8 @@
             if (event.wasClean) {
                 addToast(`[close] Connection closed cleanly, code=${event.code} reason=${event.reason}`, 'warning');
             } else {
-                addToast('[close] Connection died', 'error');
+
+                ('[close] Connection died', 'error');
             }
         };
 

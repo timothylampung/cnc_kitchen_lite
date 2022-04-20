@@ -10,17 +10,18 @@ from django.dispatch import receiver
 import random
 import string
 import uuid
-from django.contrib.auth.models import User, Group, Permission
-from django.db import models
-from django.forms import JSONField
 from django.utils import timezone
 from django_lifecycle import hook, AFTER_UPDATE, BEFORE_UPDATE, LifecycleModel
+from django.contrib.auth.models import User, Group, Permission
 
+from django.db import models
+from django.forms import JSONField
 # Create your models here.
 from cnc_kitchen_lite.core_model import DocumentModel, id_generator
 from django.conf import settings
 
 MODULE_QUEUE_NAME = getattr(settings, "MODULE_QUEUE_NAME", None)
+HANDLER_TYPE = getattr(settings, "HANDLER_TYPE", None)
 
 
 def upload_recipe_image(instance, filename):
@@ -28,25 +29,7 @@ def upload_recipe_image(instance, filename):
 
 
 class Recipe(DocumentModel):
-    STIR_FRY_MODULE = 'STIR_FRY_MODULE'
-    DEEP_FRY_MODULE = 'DEEP_FRY_MODULE'
-    GRILLING_MODULE = 'GRILLING_MODULE'
-    DRINKS_MODULE = 'DRINKS_MODULE'
-    BOILER_MODULE = 'BOILER_MODULE'
-    STEAMING_MODULE = 'STEAMING_MODULE'
-    TRANSPORTER_MODULE = 'TRANSPORTER_MODULE'
-
-    TYPE = (
-        (STIR_FRY_MODULE, 'STIR_FRY_MODULE'),
-        (DEEP_FRY_MODULE, 'DEEP_FRY_MODULE'),
-        (GRILLING_MODULE, 'GRILLING_MODULE'),
-        (DRINKS_MODULE, 'DRINKS_MODULE'),
-        (BOILER_MODULE, 'BOILER_MODULE'),
-        (STEAMING_MODULE, 'STEAMING_MODULE'),
-        (TRANSPORTER_MODULE, 'TRANSPORTER_MODULE'),
-    )
-
-    queue_handler = models.CharField(max_length=200, null=True, choices=MODULE_QUEUE_NAME, default=None)
+    handler_type = models.CharField(max_length=200, null=True, choices=HANDLER_TYPE, default=None)
     recipe_name = models.CharField(max_length=400, null=True)
     recipe_author = models.CharField(null=True, blank=True, max_length=400)
     description = models.CharField(null=True, blank=True, max_length=400)

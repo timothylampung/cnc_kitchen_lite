@@ -16,6 +16,11 @@ from cnc_kitchen_lite.routing import websocket_urlpatterns
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'core.settings')
 
+
+def prepare_module():
+    pass
+
+
 application = ProtocolTypeRouter({
     "http": get_asgi_application(),
     "websocket": AuthMiddlewareStack(
@@ -23,13 +28,4 @@ application = ProtocolTypeRouter({
             websocket_urlpatterns
         )
     ),
-    # Just HTTP for now. (We can add other protocols later.)
 })
-
-# driver_path = None
-# if platform == "linux" or platform == "linux2":
-#     pass
-# elif platform == "darwin":
-#     driver_path= os.path.join(CORE_DIR, "core/chrome_driver/macOS/chromedriver")
-# elif platform == "win32":
-#     pass

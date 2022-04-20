@@ -1,0 +1,42 @@
+<script>
+    document.querySelector('#module_ip').textContent = localStorage.getItem('selectedQueueName');
+
+    function selectQueueIndex(index, name) {
+        console.log(name)
+        console.log(index)
+        document.querySelector('#module_ip').textContent = name;
+        localStorage.setItem('selectedQueueIndex', index);
+        localStorage.setItem('selectedQueueName', name);
+        load_tasks();
+    }
+
+    function getQueueIndex() {
+        return localStorage.getItem('selectedQueueIndex');
+    }
+
+    function get_module_index() {
+        $.ajax({
+            type: 'GET',
+            url: `/tasks/rq-task/stats.json/`,
+            dataType: 'json',
+            success: function (res) {
+                document.querySelector('#modules_ips').innerHTML = ''
+                console.log(res)
+                itemsHtml = '';
+                res.queues.forEach(item => {
+                    itemsHtml = itemsHtml + `
+                            <div class="menu-item px-3">
+                                <a type="button" onclick="selectQueueIndex('${item.index}','${item.name}')" class="menu-link px-3">${item.name}</a>
+                            </div>
+                                    `;
+                });
+                let queued_list = document.querySelector('#modules_ips');
+                queued_list.innerHTML = itemsHtml;
+            },
+            error: function (e) {
+                console.log(e)
+            }
+        });
+    }
+
+</script>

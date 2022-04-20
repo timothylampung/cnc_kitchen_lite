@@ -23,7 +23,7 @@ class ChannelConsumer(AsyncWebsocketConsumer):
         await self.channel_layer.group_send(
             self.room_group_name,
             {
-                'type': 'channel_message',
+                    'type': 'channel_message',
                 'message': 'connected'
             }
         )
