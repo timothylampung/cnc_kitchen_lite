@@ -625,8 +625,10 @@
         var toast = new bootstrap.Toast(toastLiveExample);
 
         socket.onopen = function (e) {
-            console.log('opened!')
-            addToast('[Opened] client connected to the server', 'info');
+            console.log('`connect`ed!')
+            load_tasks();
+
+            {#addToast('[Opened] client connected to the server', 'info');#}
         };
 
         socket.onmessage = function (event) {

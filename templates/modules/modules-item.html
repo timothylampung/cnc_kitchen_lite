@@ -9,8 +9,8 @@
         <div class="d-flex align-items-center">
             <div class="d-flex justify-content-start flex-column">
                 <a href="{% url 'modules:modules-detail' module.id %}"
-                   class="text-dark fw-bolder text-hover-primary fs-6">{{ module.name }}</a>
-                <span class="text-muted fw-bold text-muted d-block fs-7">{{ module.document_code }}</span>
+                   class="text-dark fw-bolder text-hover-primary fs-6">{{ module.name }} ({{ module.type_handler }})</a>
+                <span class="text-muted fw-bold text-muted d-block fs-8">{{ module.document_code }}</span>
             </div>
         </div>
     </td>

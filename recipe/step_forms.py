@@ -2,6 +2,15 @@ from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Div, Field
 from django import forms
 
+from ingredients.models import Ingredient
+
+
+class StepFormType:
+    HEATER_FORM = 'CM HEATER'
+    MIXER_FORM = 'CM MIXER'
+    VALVE_FORM = 'CM VALVE'
+    PICKUP_INGREDIENT = 'PU PICKUP'
+
 
 class HeaterForm(forms.Form):
     switch_heater_front = forms.BooleanField(
@@ -17,7 +26,7 @@ class HeaterForm(forms.Form):
     )
 
     switch_heater_back = forms.BooleanField(
-        label="Back Heater",
+        label="",
         widget=forms.CheckboxInput,
         initial='0',
         required=False,
@@ -31,11 +40,12 @@ class HeaterForm(forms.Form):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.helper = FormHelper(self)
+        self.helper.form_class = 'heater-form'
         self.helper.layout = Layout(
             Div(
                 Div(
                     Field('front_target_temperature', css_class="form-control"),
-                    css_class='col-md-10'
+                    css_class='col-md-10 form-floating'
                 ),
                 Div(
                     Field('switch_heater_front', css_class='form-check-input '),
@@ -72,9 +82,27 @@ class MixerForm(forms.Form):
         required=False,
     )
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper(self)
+        self.helper.form_class = 'mixer-form'
+        self.helper.layout = Layout(
+            Div(
+                Div(
+                    Field('mixer_mode', css_class="form-control"),
+                    css_class='col-md-8'
+                ),
+                Div(
+                    Field('mixer_speed', css_class="form-control"),
+                    css_class='col-md-4'
+                ),
+                css_class="row"
+            ),
+        )
+
 
 class ValveForm(forms.Form):
-    open_water_valve = forms.TypedChoiceField(
+    open_water_valve = forms.BooleanField(
         label="",
         widget=forms.CheckboxInput,
         initial='0',
@@ -86,7 +114,7 @@ class ValveForm(forms.Form):
         required=False,
     )
 
-    open_oil_valve = forms.TypedChoiceField(
+    open_oil_valve = forms.BooleanField(
         label="",
         widget=forms.CheckboxInput,
         initial='0',
@@ -98,7 +126,7 @@ class ValveForm(forms.Form):
         required=False,
     )
 
-    open_water_jet_valve = forms.TypedChoiceField(
+    open_water_jet_valve = forms.BooleanField(
         label="",
         widget=forms.CheckboxInput,
         initial='0',
@@ -113,7 +141,6 @@ class ValveForm(forms.Form):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.helper = FormHelper(self)
-
         self.helper.layout = Layout(
             Div(
                 Div(
@@ -145,6 +172,37 @@ class ValveForm(forms.Form):
                 Div(
                     Field('open_water_jet_valve', css_class='form-check-input '),
                     css_class='form-check form-switch form-check-custom form-check-solid col-md-2'
+                ),
+                css_class="row"
+            ),
+        )
+
+
+class PickIngredientForm(forms.Form):
+    ingredient = forms.IntegerField(
+        widget=forms.Select(
+            choices=Ingredient.objects.all().values_list('id', 'ingredient_name')
+        )
+    )
+
+    quantity = forms.IntegerField(
+        label="Quantity",
+        required=True,
+    )
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper(self)
+        self.helper.form_class = 'pick-ingredient-form'
+        self.helper.layout = Layout(
+            Div(
+                Div(
+                    Field('ingredient', css_class="form-control"),
+                    css_class='col-md-8'
+                ),
+                Div(
+                    Field('quantity', css_class="form-control"),
+                    css_class='col-md-4'
                 ),
                 css_class="row"
             ),

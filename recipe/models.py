@@ -1,3 +1,5 @@
+import json
+
 from django.db import models
 #  Copyright (c) 2021.
 #  Volume Research & Development sdn. bhd.
@@ -19,6 +21,8 @@ from django.forms import JSONField
 # Create your models here.
 from cnc_kitchen_lite.core_model import DocumentModel, id_generator
 from django.conf import settings
+
+from ingredients.models import Ingredient
 
 MODULE_QUEUE_NAME = getattr(settings, "MODULE_QUEUE_NAME", None)
 HANDLER_TYPE = getattr(settings, "HANDLER_TYPE", None)
@@ -62,8 +66,17 @@ class Step(DocumentModel):
 
 
 class SubStep(DocumentModel):
-    parameters = JSONField()
+    step = models.ForeignKey(Step, on_delete=models.CASCADE, default=None, related_name="sub_steps", )
+    parameters = models.CharField(max_length=3000, default='')
     name = models.CharField(max_length=10, default='')
 
     def __str__(self):
         return self.name
+
+    def get_parameter(self):
+        data = {}
+        try:
+            data = json.loads(self.parameters)
+            return data
+        except Exception:
+            return data

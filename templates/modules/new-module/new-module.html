@@ -3,7 +3,7 @@
 {% load crispy_forms_tags %}
 {% block content %}
 
-    <div class="card card-flush h-lg-100" id="kt_contacts_main">
+    <div class="card card-flush" id="kt_contacts_main">
         <!--begin::Card header-->
         <div class="card-header pt-7" id="kt_chat_contacts_header">
             <!--begin::Card title-->
@@ -23,10 +23,59 @@
                 {% csrf_token %}
                 {% crispy form %}
             </form>
-
         </div>
         <!--end::Card body-->
     </div>
 
+    <div class="row">
 
+        {% for controller_form in controller_forms %}
+            <div class="card card-flush col-md-5 m-3">
+                <!--begin::Card header-->
+                <!--end::Card header-->
+                <!--begin::Card body-->
+                <div class="card-body pt-5">
+                    <!--begin::Form-->
+                    {% crispy controller_form.form %}
+                </div>
+                <!--end::Card body-->
+            </div>
+        {% endfor %}
+
+    </div>
+{% endblock %}
+
+
+{% block extra_scripts %}
+    {% for controller_form in controller_forms %}
+        <script>
+            (function () {
+                'use strict';
+                // Fetch all the forms we want to apply custom Bootstrap validation styles to
+                var forms = document.querySelectorAll('.{{controller_form.selector }}');
+
+                // Loop over them and prevent submission
+                Array.prototype.slice.call(forms)
+                    .forEach(function (form) {
+                        form.addEventListener('submit', function (event) {
+                            if (!form.checkValidity()) {
+                                event.preventDefault();
+                                event.stopPropagation();
+                            } else {
+                                event.preventDefault();
+                                event.stopPropagation();
+                                var unindexed_array = $(this).serializeArray();
+                                var indexed_array = {};
+                                $.map(unindexed_array, function(n, i){
+                                    indexed_array[n['name']] = n['value'];
+                                });
+                                console.log(indexed_array);
+                                console.log("Form submit enabled");
+                            }
+                            form.classList.add('was-validated')
+                        }, false)
+                    })
+            })();
+        </script>
+    {% endfor %}
 {% endblock %}

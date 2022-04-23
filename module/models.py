@@ -43,3 +43,20 @@ class Module(DocumentModel):
 
     def __str__(self):
         return f'({self.type_handler}) {self.name} ({self.ip_address})'
+
+
+class ModuleController(DocumentModel):
+    HEATER = 'CM HEATER'
+    MIXER = 'CM MIXER'
+    VALVE = 'CM VALVE'
+    PICKUP_INGREDIENT = 'PU PICKUP'
+
+    CONTROLLERS = [
+        (HEATER, HEATER),
+        (MIXER, MIXER),
+        (VALVE, VALVE),
+        (PICKUP_INGREDIENT, PICKUP_INGREDIENT),
+    ]
+
+    module = models.ForeignKey(Module, on_delete=models.CASCADE, default=None, related_name="controllers")
+    controller_type = models.CharField(max_length=200, null=True, choices=CONTROLLERS, default=None)

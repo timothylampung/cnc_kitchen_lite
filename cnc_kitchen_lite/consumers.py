@@ -20,14 +20,6 @@ class ChannelConsumer(AsyncWebsocketConsumer):
         )
         print(f'ROOM NAME => {self.room_group_name}')
         print(f'CHANNEL NAME => {self.channel_name}')
-        await self.channel_layer.group_send(
-            self.room_group_name,
-            {
-                    'type': 'channel_message',
-                'message': 'connected'
-            }
-        )
-
         await self.accept()
 
     async def disconnect(self, close_code):

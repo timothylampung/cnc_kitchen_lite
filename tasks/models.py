@@ -44,8 +44,17 @@ class TaskSet(DocumentModel):
     time_to_complete = models.IntegerField(default=0, null=True, blank=True, )
     task_status = models.CharField(max_length=200, null=True, choices=TASK_STATUS, default=PENDING)
     rq_job_id = models.CharField(null=True, blank=True, max_length=400)
-    module = models.ForeignKey(Module, on_delete=models.CASCADE, default=None, related_name="tasks", )
+    task_origin = models.CharField(max_length=200, null=True, choices=TASK_STATUS, default=PENDING)
+    module = models.ForeignKey(Module, on_delete=models.CASCADE, default=None, related_name="tasks")
+    total_steps = models.IntegerField(default=0, null=True, blank=True)
+    current_step = models.IntegerField(default=0, null=True, blank=True)
+    queued_time = models.DateTimeField(auto_now=False, null=True, blank=True)
+    started_time = models.DateTimeField(auto_now=False, null=True, blank=True)
+    completed_time = models.DateTimeField(auto_now=False, null=True, blank=True)
+    error_message = models.CharField(null=True, max_length=3000)
 
     def save(self, **kwargs):
-        self.task_name = self.recipe.recipe_name + '-' + self.task_name
+        if self.id is None:
+            self.task_name = self.recipe.recipe_name + '-' + self.task_name
+            self.total_steps = self.recipe.steps.all().count()
         super(TaskSet, self).save(**kwargs)

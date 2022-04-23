@@ -337,32 +337,12 @@
     </div>
 
 
+    {% include 'recipes/new-recipe/recipe-sub-form/pick-ingredient-form.html' %}
+    {% include 'recipes/new-recipe/recipe-sub-form/heater_form.html' %}
+    {% include 'recipes/new-recipe/recipe-sub-form/mixer-form.html' %}
+    {% include 'recipes/new-recipe/recipe-sub-form/valve-form.html' %}
 
-    <div class="modal fade" tabindex="-1" id="kt_modal_1">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Add Step</h5>
 
-                    <!--begin::Close-->
-                    <div class="btn btn-icon btn-sm btn-active-light-primary ms-2" data-bs-dismiss="modal"
-                         aria-label="Close">
-                        <span class="svg-icon svg-icon-2x"></span>
-                    </div>
-                    <!--end::Close-->
-                </div>
-
-                <div class="modal-body">
-                    {% crispy valve_form %}
-                </div>
-
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Save changes</button>
-                </div>
-            </div>
-        </div>
-    </div>
     <div class="modal fade" id="add_wok_operation" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -388,4 +368,18 @@
             </div>
         </div>
     </div>
+{% endblock %}
+
+
+{% block extra_scripts %}
+    <script>
+        function set_form_action(form_id, recipe_id, step_id, form_type) {
+            let form = document.querySelector(`#${form_id}`) || null;
+            if (form) {
+                form.action = `/recipes/add-sub-step/${step_id}/${recipe_id}/${form_type}/`;
+                $(`#${form_id}_modal`).modal('toggle')
+            }
+        }
+
+    </script>
 {% endblock %}

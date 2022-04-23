@@ -15,6 +15,13 @@ class ModuleForm(ModelForm):
         self.helper = FormHelper()
         self.helper.form_method = 'post'
         self.helper.form_action = '/modules/create/'
+        self.button_label = 'Create'
+
+        super(ModuleForm, self).__init__(*args, **kwargs)
+
+        if self.instance.id is not None:
+            self.button_label = 'Update'
+
         self.helper.layout = Layout(
             Div(
                 Div('name', css_class='form-group col-md-12'),
@@ -26,7 +33,5 @@ class ModuleForm(ModelForm):
                 Div('port', css_class='form-group col-md-4'),
                 css_class='row'
             ),
-            Submit('submit', 'Create', css_class='mt-4 col-12')
+            Submit('submit', self.button_label, css_class='mt-4 col-12')
         )
-
-        super(ModuleForm, self).__init__(*args, **kwargs)

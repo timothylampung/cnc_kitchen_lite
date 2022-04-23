@@ -1,3 +1,7 @@
+import json
+
+from asgiref.sync import async_to_sync
+from channels.layers import get_channel_layer
 from django.shortcuts import render, redirect
 
 # Create your views here.
@@ -5,15 +9,16 @@ from django.urls import reverse
 from django.views.generic import ListView, DetailView, CreateView, DeleteView, UpdateView
 
 from recipe.forms import RecipeForm, StepForm
-from recipe.models import Recipe, Step
+from recipe.models import Recipe, Step, SubStep
 from posts.forms import PostForm
 from tasks.forms import TaskSetForm
 
-from recipe.step_forms import (HeaterForm, MixerForm, ValveForm)
+from recipe.step_forms import (HeaterForm, MixerForm, ValveForm, StepFormType, PickIngredientForm)
 
 heater_form = HeaterForm()
 mixer_form = MixerForm()
 valve_form = ValveForm()
+pickup_form = PickIngredientForm()
 
 
 class RecipeListView(ListView):
@@ -73,6 +78,7 @@ class RecipeDetailView(DetailView, UpdateView):
         context['heater_form'] = heater_form
         context['mixer_form'] = mixer_form
         context['valve_form'] = valve_form
+        context['pickup_form'] = pickup_form
         return self.render_to_response(context)
 
     def form_valid(self, form):
@@ -115,6 +121,7 @@ class RecipeUpdateView(UpdateView):
 def step_add(request):
     print(request.POST)
     form = StepForm(request.POST or None)
+
     if request.method == "POST":
         if form.is_valid():
             form.save()
@@ -122,4 +129,43 @@ def step_add(request):
         print(form.errors)
         return redirect(reverse("recipes:recipes-detail", kwargs={
             'pk': request.POST['recipe']
+        }))
+
+
+def add_sub_step(request, step_id, recipe_id, form_type):
+    print(request.POST)
+    form = HeaterForm(request.POST or None)
+    data = {}
+    if request.method == "POST":
+        if form_type == StepFormType.MIXER_FORM:
+            form = MixerForm(request.POST or None)
+        if form_type == StepFormType.VALVE_FORM:
+            form = ValveForm(request.POST or None)
+            print(data)
+        if form_type == StepFormType.HEATER_FORM:
+            form = HeaterForm(request.POST or None)
+        if form_type == StepFormType.PICKUP_INGREDIENT:
+            form = PickIngredientForm(request.POST or None)
+
+        if form.is_valid():
+            _f = dict()
+            _f = form.data.copy()
+            _d = _f.pop('csrfmiddlewaretoken')
+            data = json.dumps(_f)
+            sub_step = SubStep(step_id=step_id, name=form_type)
+            sub_step.parameters = data
+            sub_step.save()
+            async_to_sync(get_channel_layer().group_send)(f'channel_1', {
+                'type': 'channel_message',
+                'message': 'Sub step saved!',
+            })
+        else:
+            print(form.errors)
+            async_to_sync(get_channel_layer().group_send)(f'channel_1', {
+                'type': 'channel_message',
+                'message': 'Some error occur while saving sub step',
+            })
+
+        return redirect(reverse("recipes:recipes-detail", kwargs={
+            'pk': recipe_id
         }))

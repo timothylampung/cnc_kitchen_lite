@@ -6,17 +6,16 @@
     };
 
     function get_finished_data(queue_id) {
-        console.log(queue_id)
         $.ajax({
             type: 'GET',
-            url: `/tasks/rq-task/queues/${queue_id}/finished/`,
+            url: `/tasks/api/get-success-tasks/`,
             dataType: 'json',
             success: function (res) {
                 document.querySelector('#finished-list').innerHTML = ''
                 console.log(res)
                 itemsHtml = '';
 
-                res.jobs.forEach((job) => {
+                res.forEach((job) => {
                     a = `
                         <div id="finished-node-clone" class="d-flex flex-nowrap align-items-center mb-7">
                             <div class="symbol symbol-50px me-5">
@@ -28,8 +27,8 @@
                                 <a id="finished-tab-task-name" href="#" class="text-white text-hover-primary fs-6 fw-bolder">
                                     ${job.task_name}
                                 </a>
-                                <span id="finished-tab-worker-name" class="sidebar-text-muted fw-bold">${job.origin}</span>
-                                <span id="finished-tab-worker-name" class="sidebar-text-muted fw-bold">${job.id}</span>
+                                <span id="finished-tab-worker-name" class="sidebar-text-muted fw-bold">${job.task_origin}</span>
+                                <span id="finished-tab-worker-name" class="sidebar-text-muted fw-bold">${job.rq_job_id}</span>
                             </div>
                         </div>`;
 

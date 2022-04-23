@@ -1,19 +1,12 @@
-import os
 import threading
 
 from asgiref.sync import async_to_sync
 from channels.layers import get_channel_layer
-from django.core import management
 from django.core.management.base import BaseCommand
 from django_rq.queues import get_queue_by_index
-from redis import Redis
-from rq import Queue, Worker
-import django_rq
 from rq.job import Job
 
-from recipe.models import Recipe
 from tasks.models import TaskSet
-from tasks.recipe_runner import run_task
 
 
 class Command(BaseCommand):
