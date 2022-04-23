@@ -66,11 +66,12 @@
                                 event.stopPropagation();
                                 var unindexed_array = $(this).serializeArray();
                                 var indexed_array = {};
-                                $.map(unindexed_array, function(n, i){
+                                $.map(unindexed_array, function (n, i) {
                                     indexed_array[n['name']] = n['value'];
                                 });
                                 console.log(indexed_array);
                                 console.log("Form submit enabled");
+                                pingArduino(indexed_array, '{{ controller_form.type }}')
                             }
                             form.classList.add('was-validated')
                         }, false)
@@ -78,4 +79,44 @@
             })();
         </script>
     {% endfor %}
+
+    <script>
+
+        function pingArduino(data, type) {
+            var $crf_token = getCookie("csrftoken");
+            $.ajax({
+                type: "POST",
+                data: JSON.stringify(data),
+                headers: {"X-CSRFToken": $crf_token},
+                contentType: 'application/json',
+                url: `/tasks/api/send-remote-data/${type}/`,
+                success: function (msg) {
+                    console.log(msg)
+                    Swal.fire(
+                        'Added!',
+                        'Recipe added to task set',
+                        'success'
+                    ).then((result) => {
+                        if (result.isConfirmed) {
+                        }
+                    })
+                },
+                error: function (error) {
+                    Swal.fire(
+                        'Error!',
+                        `${error.statusText}`,
+                        'error'
+                    ).then((result) => {
+                        if (result.isConfirmed) {
+                        }
+                    })
+                }
+            });
+
+        }
+
+
+    </script>
+
+
 {% endblock %}

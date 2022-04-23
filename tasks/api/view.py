@@ -2,8 +2,11 @@ import json
 
 from asgiref.sync import async_to_sync
 from channels.layers import get_channel_layer
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
 from rest_framework import generics
 from rest_framework.decorators import permission_classes
+from rest_framework.parsers import JSONParser
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from django.core import management
@@ -107,34 +110,18 @@ class GetQueuedTaskSet(generics.RetrieveAPIView):
         return Response(ser.data)
 
 
+@csrf_exempt
 @permission_classes((AllowAny,))
 def send_remote_data(request, form_type):
-    print(request.POST)
-    form = HeaterForm(request.POST or None)
-    data = {}
+    print(request)
+    # form = HeaterForm(data=request.data)
+    # data = {}
     if request.method == "POST":
-        if form_type == ModuleController.MIXER:
-            form = MixerForm(request.POST or None)
-        if form_type == ModuleController.VALVE:
-            form = ValveForm(request.POST or None)
-            print(data)
-        if form_type == ModuleController.HEATER:
-            form = HeaterForm(request.POST or None)
-        if form_type == ModuleController.PICKUP_INGREDIENT:
-            form = PickIngredientForm(request.POST or None)
-
-        if form.is_valid():
-            async_to_sync(get_channel_layer().group_send)(f'channel_1', {
-                'type': 'channel_message',
-                'message': 'Arduino pinged!',
-            })
-        else:
-            async_to_sync(get_channel_layer().group_send)(f'channel_1', {
-                'type': 'channel_message',
-                'message': 'Failed to ping arduino!',
-            })
-
-        return Response({
+        data = JSONParser().parse(request)
+        print(data)
+        async_to_sync(get_channel_layer().group_send)(f'channel_1', {
             'type': 'channel_message',
-            'message': 'Sub step executed!',
+            'message': 'Arduino Pinged',
         })
+
+        return JsonResponse(data)
